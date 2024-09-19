@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_list_second/bloc/TaskBloc.dart';
@@ -27,8 +28,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    FirebaseManager m = FirebaseManager();
-    m.getTasks();
+  //FirebaseManager.init();
+
+
 
     return MultiBlocProvider(
       providers: [

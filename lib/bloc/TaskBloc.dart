@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:todo_list_second/bloc/task_state.dart';
+import 'package:todo_list_second/models/firebase_manager.dart';
 import 'package:todo_list_second/models/task_model.dart';
 
 import 'note_event.dart';
@@ -8,7 +9,13 @@ class TaskBloc extends Bloc<TaskEvent, TaskState>{
   TaskBloc() : super(const TaskInitialState())
   {
     on<LoadEvent>((event, emit) async{
-      emit(const TaskLoadedState(<Task>[]));
+     await FirebaseManager.init();
+
+     var instance = FirebaseManager.getInstance();
+
+      List<Task> tasks = await instance.getTasks();
+
+      emit(TaskLoadedState(tasks));
     });
     on<AddEvent>((event, emit){
       if (state is TaskLoadedState)

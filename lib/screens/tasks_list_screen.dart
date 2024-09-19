@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_list_second/bloc/TaskBloc.dart';
+import 'package:todo_list_second/bloc/note_event.dart';
+import 'package:todo_list_second/models/firebase_manager.dart';
 
 import '../bloc/task_state.dart';
 import '../models/task_model.dart';
@@ -48,8 +50,6 @@ class _TodoListScreenState extends State<TodoListScreen> {
       builder: (context, state) {
         var tasks = <Task>[];
 
-        print(state);
-
         if (state is TaskLoadedState)
           {
             tasks = state.tasks;
@@ -71,7 +71,10 @@ class _TodoListScreenState extends State<TodoListScreen> {
                 onTap:()
                 {
                   taskClicked(tasks[index]);
-                }
+                },
+                onLongPress: () {
+                  deleteTask(tasks[index]);
+                },
             );
           },
         );
@@ -92,5 +95,10 @@ class _TodoListScreenState extends State<TodoListScreen> {
         child: Icon(Icons.add),
       ),
     );
+  }
+
+  void deleteTask(Task task) {
+    FirebaseManager.getInstance().deleteTask(task);
+    context.read<TaskBloc>().add(DeleteEvent(task));
   }
 }

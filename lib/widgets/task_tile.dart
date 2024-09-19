@@ -12,20 +12,12 @@ class TaskTile extends StatefulWidget {
 
 class _TaskTileState extends State<TaskTile>
 {
-@override
-Widget build(BuildContext context) {
-return GestureDetector(
-  onTap: ()
-    {
-      //widget.action();
-      //Navigator.pushNamed(context, "edit_task_screen", arguments: widget.task);
-    },
-    child:
- ListTile(
-
-title: Text(widget.task.title),
-
-subtitle: Text(intl.DateFormat('MMM dd, yyyy').format(widget.task.date)),
-));
-}
+  @override
+  Widget build(BuildContext context) {
+    return
+      ListTile(
+        title: Text(widget.task.title),
+        subtitle: Text(intl.DateFormat('MMM dd, yyyy').format(widget.task.date.toDate())),
+      );
+  }
 }

@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Task {
   String id;
   String title;
   String text;
-  DateTime date;
+  Timestamp date;
   Task({required this.id, required this.title, this.text = "", required this.date});
 
   static fromJson(r) {

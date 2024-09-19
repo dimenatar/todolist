@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:todo_list_second/bloc/TaskBloc.dart';
 import 'package:todo_list_second/bloc/note_event.dart';
 import 'package:todo_list_second/bloc/task_state.dart';
+import 'package:todo_list_second/models/firebase_manager.dart';
 
 import '../models/task_model.dart';
 
@@ -41,7 +43,7 @@ class _EditTaskScreen extends State<EditTaskScreen> {
     {
       widget.task = data['task'];
       _captionController.text = widget.task!.title;
-      _dateController.text = DateFormat('MMM dd, yyyy').format(widget.task!.date);
+      _dateController.text = DateFormat('MMM dd, yyyy').format(widget.task!.date.toDate());
       _mainTextController.text = widget.task!.text;
     }
 
@@ -105,9 +107,10 @@ class _EditTaskScreen extends State<EditTaskScreen> {
                           final updatedTask = Task(
                             id: widget.task!.id,
                             title: _captionController.text,
-                            date: DateTime.now(),
+                            date: Timestamp.fromDate(DateTime.now()),
                             text: _mainTextController.text,
                           );
+                          FirebaseManager.getInstance().updateTask(updatedTask);
                           context.read<TaskBloc>().add(UpdateEvent(updatedTask));
                           Navigator.pop(context, updatedTask);
                         }

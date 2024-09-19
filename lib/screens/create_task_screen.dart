@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_list_second/bloc/TaskBloc.dart';
 import 'package:todo_list_second/bloc/note_event.dart';
+import 'package:todo_list_second/models/firebase_manager.dart';
 
 import '../bloc/task_state.dart';
 import '../models/task_model.dart';
@@ -60,10 +62,11 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                     final task = Task(
                       id: "",
                       title: _captionController.text,
-                      date: DateTime.now(),
+                      date: Timestamp.fromDate(DateTime.now()),
                       text: _mainTextController.text,
                     );
 
+                    FirebaseManager.getInstance().addTask(task);
                     context.read<TaskBloc>().add(AddEvent(task));
 
                     Navigator.pop(context, task);
